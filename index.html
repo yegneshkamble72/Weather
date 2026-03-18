@@ -1,19 +1,18 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>YK Weather App</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>YK Weather Pro</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
 
 <style>
-.bg-clear { background: linear-gradient(180deg,#60a5fa 0%, #93c5fd 100%); }
-.bg-clouds { background: linear-gradient(180deg,#cbd5e1 0%, #94a3b8 100%); }
-.bg-rain { background: linear-gradient(180deg,#64748b 0%, #0f172a 100%); }
-.bg-snow { background: linear-gradient(180deg,#e6eef8 0%, #cfe9ff 100%); }
-.bg-thunder { background: linear-gradient(180deg,#0f172a 0%, #0b1120 100%); }
+body{
+background: linear-gradient(135deg,#0f172a,#1e293b);
+}
 
+/* Loader */
 #loader{
 position:fixed;
 top:0;left:0;
@@ -22,55 +21,96 @@ background:#020617;
 display:flex;
 align-items:center;
 justify-content:center;
-color:white;
 z-index:9999;
+}
+
+.loader-circle{
+width:60px;height:60px;
+border:5px solid #334155;
+border-top:5px solid #38bdf8;
+border-radius:50%;
+animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+100%{transform:rotate(360deg);}
+}
+
+/* Glass effect */
+.glass{
+background: rgba(255,255,255,0.08);
+backdrop-filter: blur(12px);
+border:1px solid rgba(255,255,255,0.1);
 }
 </style>
 </head>
 
-<body class="min-h-screen flex items-center justify-center bg-gray-100 p-4">
+<body class="text-white">
 
-<div id="loader">Loading Weather...</div>
+<!-- Loader -->
+<div id="loader">
+  <div class="loader-circle"></div>
+</div>
 
-<div class="w-full max-w-3xl rounded-2xl shadow-2xl overflow-hidden">
-  
-  <!-- HEADER -->
-  <div id="hero" class="p-6 bg-clear text-white">
-    <div class="flex flex-col md:flex-row justify-between gap-4">
-      <div>
-        <h1 class="text-2xl md:text-3xl font-bold">YK Weather App</h1>
-        <p class="text-sm opacity-90">Search city or use location</p>
-      </div>
+<!-- NAVBAR -->
+<nav class="glass px-6 py-4 flex justify-between items-center">
+  <h1 class="text-xl font-bold">YK WEATHER</h1>
+  <div class="flex gap-4 text-sm">
+    <a href="#" class="hover:text-cyan-400">Home</a>
+    <a href="#" class="hover:text-cyan-400">Help</a>
+    <a href="#" class="hover:text-cyan-400">Contact</a>
+  </div>
+</nav>
 
-      <div class="flex gap-2">
-        <button id="geoBtn" class="bg-white/20 px-3 py-2 rounded">📍</button>
-        <button id="toggleUnits" class="bg-white/20 px-3 py-2 rounded">°C</button>
-      </div>
-    </div>
+<!-- MAIN -->
+<div class="flex items-center justify-center p-4 mt-6">
 
-    <div class="mt-4 flex gap-2">
-      <input id="searchInput" type="text" placeholder="Enter city..."
-      class="flex-1 p-2 rounded text-black"/>
-      <button id="searchBtn" class="bg-white text-black px-4 rounded">Search</button>
-    </div>
+<div class="glass w-full max-w-3xl rounded-2xl p-6 shadow-xl">
+
+<!-- TOP -->
+<div class="flex flex-col md:flex-row justify-between gap-4">
+  <div>
+    <h2 class="text-2xl font-bold">Weather Dashboard</h2>
+    <p class="text-sm text-gray-300">Search city or use GPS</p>
   </div>
 
-  <!-- BODY -->
-  <div class="bg-white p-6 text-center">
-    <h2 id="locationName" class="text-xl font-bold">—</h2>
-    <p id="localTime" class="text-sm text-gray-500"></p>
-
-    <div class="text-4xl font-bold mt-4" id="temp">—</div>
-    <div id="desc" class="text-gray-600"></div>
-
-    <div class="mt-4 text-sm">
-      <p id="feels"></p>
-      <p id="humidity"></p>
-      <p id="wind"></p>
-      <p id="sun"></p>
-    </div>
+  <div class="flex gap-2">
+    <button id="geoBtn" class="bg-cyan-500 px-3 py-2 rounded">📍</button>
+    <button id="toggleUnits" class="bg-gray-700 px-3 py-2 rounded">°C</button>
   </div>
 </div>
+
+<!-- SEARCH -->
+<div class="mt-4 flex gap-2">
+  <input id="searchInput" placeholder="Enter city..."
+  class="flex-1 p-3 rounded bg-gray-800 text-white outline-none"/>
+  <button id="searchBtn" class="bg-cyan-500 px-5 rounded font-semibold">Search</button>
+</div>
+
+<!-- WEATHER -->
+<div class="text-center mt-6">
+  <h2 id="locationName" class="text-xl font-bold">—</h2>
+  <p id="localTime" class="text-gray-400 text-sm"></p>
+
+  <div id="temp" class="text-5xl font-bold mt-4">—</div>
+  <div id="desc" class="text-gray-300 capitalize"></div>
+</div>
+
+<!-- DETAILS -->
+<div class="grid grid-cols-2 gap-4 mt-6 text-sm">
+  <div class="glass p-3 rounded">🌡 <span id="feels"></span></div>
+  <div class="glass p-3 rounded">💧 <span id="humidity"></span></div>
+  <div class="glass p-3 rounded">💨 <span id="wind"></span></div>
+  <div class="glass p-3 rounded">🌅 <span id="sun"></span></div>
+</div>
+
+</div>
+</div>
+
+<!-- FOOTER -->
+<footer class="text-center text-gray-400 text-sm mt-6 pb-4">
+  © 2026 YK OFFICIAL • Weather App • Help | Contact
+</footer>
 
 <script>
 const API_KEY = "536a41fb909a99fff37534418199a1e9";
@@ -89,14 +129,6 @@ const feels = document.getElementById("feels");
 const humidity = document.getElementById("humidity");
 const wind = document.getElementById("wind");
 const sun = document.getElementById("sun");
-const hero = document.getElementById("hero");
-
-function setBG(main){
-hero.className = "p-6 text-white";
-if(main.includes("Cloud")) hero.classList.add("bg-clouds");
-else if(main.includes("Rain")) hero.classList.add("bg-rain");
-else hero.classList.add("bg-clear");
-}
 
 async function getWeather(city){
 try{
@@ -122,8 +154,6 @@ humidity.innerHTML = "Humidity: " + data.main.humidity + "%";
 wind.innerHTML = "Wind: " + data.wind.speed;
 
 sun.innerHTML = "Sunrise: " + new Date(data.sys.sunrise*1000).toLocaleTimeString();
-
-setBG(data.weather[0].main);
 
 localTime.innerHTML = new Date().toLocaleString();
 
