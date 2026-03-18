@@ -57,8 +57,8 @@ border:1px solid rgba(255,255,255,0.1);
   <h1 class="text-xl font-bold">YK WEATHER</h1>
   <div class="flex gap-4 text-sm">
     <a href="#" class="hover:text-cyan-400">Home</a>
-    <a href="#" class="hover:text-cyan-400">Help</a>
-    <a href="#" class="hover:text-cyan-400">Contact</a>
+   <a href="#" id="helpBtn" class="hover:text-cyan-400">Help</a>
+<a href="#" id="contactBtn" class="hover:text-cyan-400">Contact</a>
   </div>
 </nav>
 
@@ -105,6 +105,34 @@ border:1px solid rgba(255,255,255,0.1);
 </div>
 
 </div>
+</div>
+
+
+  <!-- HELP MODAL -->
+<div id="helpModal" class="fixed inset-0 hidden items-center justify-center bg-black/60 z-50">
+  <div class="glass p-6 rounded-xl w-[90%] max-w-md relative">
+    <button onclick="closeModal('helpModal')" class="absolute top-2 right-3 text-xl">✖</button>
+    <h2 class="text-xl font-bold mb-3">Help</h2>
+    <p class="text-sm text-gray-300">
+      • Enter city name and click search<br>
+      • Use 📍 button for current location<br>
+      • Toggle °C/°F using button<br><br>
+      If weather not loading, check internet or API key.
+    </p>
+  </div>
+</div>
+
+<!-- CONTACT MODAL -->
+<div id="contactModal" class="fixed inset-0 hidden items-center justify-center bg-black/60 z-50">
+  <div class="glass p-6 rounded-xl w-[90%] max-w-md relative">
+    <button onclick="closeModal('contactModal')" class="absolute top-2 right-3 text-xl">✖</button>
+    <h2 class="text-xl font-bold mb-3">Contact</h2>
+    <p class="text-sm text-gray-300">
+      📧 Email: ykofficial@email.com <br>
+      📱 Phone: +91 7219274312 <br><br>
+      Developed by YK OFFICIAL 🚀
+    </p>
+  </div>
 </div>
 
 <!-- FOOTER -->
@@ -189,6 +217,31 @@ toggleUnits.innerHTML = units=="metric"?"°C":"°F";
 };
 
 window.onload = ()=> getWeather("Nagpur");
+
+
+
+  // open modal
+document.getElementById("helpBtn").onclick = () => {
+  document.getElementById("helpModal").style.display = "flex";
+};
+
+document.getElementById("contactBtn").onclick = () => {
+  document.getElementById("contactModal").style.display = "flex";
+};
+
+// close modal
+function closeModal(id){
+  document.getElementById(id).style.display = "none";
+}
+
+// outside click close
+window.onclick = function(e){
+  const help = document.getElementById("helpModal");
+  const contact = document.getElementById("contactModal");
+
+  if(e.target === help) help.style.display = "none";
+  if(e.target === contact) contact.style.display = "none";
+}
 </script>
 
 </body>
