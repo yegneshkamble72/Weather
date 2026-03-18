@@ -3,23 +3,42 @@ var main = document.querySelector('#name');
 var temp = document.querySelector('.temp');
 var desc = document.querySelector('.desc');
 var clouds = document.querySelector('.clouds');
-var button= document.querySelector('.submit');
+var button = document.querySelector('.submit');
 
+button.addEventListener('click', function () {
 
-button.addEventListener('click', function(name){
-fetch('https://api.openweathermap.org/data/2.5/weather?q='+input.value+'&appid=8a900f6f0328ad1ce9b27dc2052a7487')
-.then(response => response.json())
-.then(data => {
-  var tempValue = data['main']['temp'];
-  var nameValue = data['name'];
-  var descValue = data['weather'][0]['description'];
+  if(input.value === ""){
+    alert("Please enter city name!");
+    return;
+  }
 
-  main.innerHTML = nameValue;
-  desc.innerHTML = "Desc - "+descValue;
-  temp.innerHTML = "Temp - "+tempValue;
-  input.value ="";
+  fetch('https://api.openweathermap.org/data/2.5/weather?q=' 
+  + input.value + 
+  '&appid=536a41fb909a99fff37534418199a1e9&units=metric')
 
-})
+  .then(response => response.json())
+  .then(data => {
 
-.catch(err => alert("Wrong city name!"));
-})
+    if(data.cod === "404"){
+      alert("City not found!");
+      return;
+    }
+
+    var tempValue = data.main.temp;
+    var nameValue = data.name;
+    var descValue = data.weather[0].description;
+    var cloudValue = data.clouds.all;
+
+    main.innerHTML = nameValue;
+    desc.innerHTML = "Weather - " + descValue;
+    temp.innerHTML = "Temperature - " + tempValue + " °C";
+    clouds.innerHTML = "Clouds - " + cloudValue + "%";
+
+    input.value = "";
+
+  })
+  .catch(() => {
+    alert("Something went wrong!");
+  });
+
+});
